@@ -2,17 +2,15 @@ import _$ from 'jquery';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-dom/test-utils';
-import jsdom from 'jsdom';
 import chai, { expect } from 'chai';
 import chaiJquery from 'chai-jquery';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from '../src/reducers';
 
-global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
-global.window = global.document.defaultView;
-global.navigator = global.window.navigator;
-const $ = _$(window);
+// The DOM globals are created in test/dom.js, which mocha loads first,
+// so jquery already exports a jQuery bound to that window.
+const $ = _$;
 
 chaiJquery(chai, chai.util, $);
 

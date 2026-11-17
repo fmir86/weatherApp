@@ -23,7 +23,11 @@ class SearchBar extends Component{
     onFormSubmit(event){
         event.preventDefault();
 
-        this.props.fetchWeather(this.state.term);
+        // redux-promise re-throws failed requests; the error reducer already shows them.
+        const result = this.props.fetchWeather(this.state.term);
+        if (result && typeof result.catch === "function") {
+            result.catch(() => {});
+        }
         this.setState({term: ''});
     }
 

@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
   entry: ['./src/index.js'],
   output: {
@@ -16,6 +18,13 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    // API keys are read from the environment at build time. See README.
+    new webpack.DefinePlugin({
+      'process.env.OPENWEATHER_API_KEY': JSON.stringify(process.env.OPENWEATHER_API_KEY || ''),
+      'process.env.GOOGLE_MAPS_API_KEY': JSON.stringify(process.env.GOOGLE_MAPS_API_KEY || '')
+    })
+  ],
   resolve: {
     extensions: ['', '.js', '.jsx']
   },

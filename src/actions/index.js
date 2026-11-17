@@ -1,6 +1,7 @@
 import axios from "axios"
 
-const API_KEY = "1bb3cd2434d8170d4217c084c73ea108";
+// Set OPENWEATHER_API_KEY in your environment before running the app (see README).
+const API_KEY = process.env.OPENWEATHER_API_KEY;
 const ROOT_URL = `https://api.openweathermap.org/data/2.5/forecast?appid=${API_KEY}`;
 
 
@@ -9,10 +10,15 @@ export const FETCH_WEATHER = "FETCH_WEATHER";
 
 export function fetchWeather(city){
 
-    const url = `${ROOT_URL}&q=${city},CR`;
-    const request = axios.get(url);
+    if (!API_KEY) {
+        return {
+            type: FETCH_WEATHER,
+            payload: Promise.reject(new Error("No OpenWeatherMap API key configured. Set OPENWEATHER_API_KEY and restart the dev server."))
+        };
+    }
 
-    console.log("Request", request);
+    const url = `${ROOT_URL}&q=${encodeURIComponent(city)},CR`;
+    const request = axios.get(url);
 
     return{
         type: FETCH_WEATHER,
